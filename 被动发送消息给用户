@@ -1,0 +1,41 @@
+<?php
+/**
+ * 
+ * 发送文本事件信息给用户类
+ */
+class ClientTextRequest {
+	private $textTpl;
+	private $fromUsername;
+	private $toUsername;
+	private $time;
+	private $msgType;
+	/**
+	 * 构造函数
+	 * @param unknown $fromUsername
+	 * @param unknown $toUsername
+	 * @param unknown $time
+	 */
+	public function __construct($fromUsername, $toUsername) {
+		$this->textTpl = "<xml>
+		                        <ToUserName><![CDATA[%s]]></ToUserName>
+		                        <FromUserName><![CDATA[%s]]></FromUserName>
+		                        <CreateTime>%s</CreateTime>
+		                        <MsgType><![CDATA[%s]]></MsgType>
+		                        <Content><![CDATA[%s]]></Content>
+		                        <FuncFlag>0</FuncFlag>
+		                        </xml>";
+		$this->fromUsername = $fromUsername;
+		$this->toUsername = $toUsername;
+		$this->time = time();
+		$this->msgType = "text";
+	}
+	/**
+	 * 封装要发送给微信服务器的信息，如果要发送给客户只需要 输出返回值即可 然后通过 echo 打印返回的值即可
+	 * @param unknown $contentStr
+	 * @return string
+	 */
+	public function sprintf($contentStr) {
+		return sprintf($this->textTpl, $this->fromUsername, $this->toUsername, $this->time, $this->msgType, $contentStr);
+	}
+}
+?>
