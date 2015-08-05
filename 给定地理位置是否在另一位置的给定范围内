@@ -1,0 +1,28 @@
+/*
+ *调用
+ *chuli_weizhi($wz1,$wz2);
+ *参数
+ *
+ *标准位置  $wz1  
+ *纬度 $wz1[0]  经度 $wz1[1]
+ *
+ *判定位置  $wz2
+ *纬度 $wz2[0]  经度 $wz2[1]
+ *
+ *@return  在给定的范围返回 true 否则 false
+ */
+function chuli_weizhi($wz1,$wz2){
+	if($wz1[0]==null||$wz2[0]==null) return false;
+	$myLat = $wz1[0];//接收到的当前位置的纬度  
+	$myLng = $wz1[1];//接收到的当前位置的经度  
+	$range = 180 / pi() * 1.0/ 6372.797;     //里面的 1 就代表搜索 1km 之内，单位km  
+	$lngR = $range / cos($myLat * pi() / 180); 
+	$maxLat = $myLat + $range;//最大纬度  
+	$minLat = $myLat - $range;//最小纬度  
+	$maxLng = $myLng + $lngR;//最大经度  
+    $minLng = $myLng - $lngR;//最小经度  
+	if($wz2[0]>=$minLat&&$wz2[0]<=$maxLat&&$wz2[1]>=$minLng&&$wz2[1]<=$maxLng){
+		return true;
+	}
+	else return false;
+}
