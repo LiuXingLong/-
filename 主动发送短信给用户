@@ -1,0 +1,51 @@
+/**
+	 * 主动发送短信
+	 * 
+	 * 调用 main_new($appID,$appsecret,$data);
+	 *
+	 * 参数
+	 * 发送  消息内容
+	 * $access_token=get_Access_token($appID,$appsecret);  函数
+	 * $appID  $appsecret
+	 *
+	 * @return 返回除了结果   errcode      42001 代表$access_token超时   0 代表请求成功
+	 */	 
+	function Send_message($data,$access_token) {
+		$ch = curl_init ();
+		curl_setopt ( $ch, CURLOPT_URL, "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token={$access_token}" );
+		curl_setopt ( $ch, CURLOPT_CUSTOMREQUEST, "POST" );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
+		curl_setopt ( $ch, CURLOPT_SSL_VERIFYHOST, FALSE );
+		curl_setopt ( $ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (compatible; MSIE 5.01; Windows NT 5.0)' );
+		curl_setopt ( $ch, CURLOPT_FOLLOWLOCATION, 1 );
+		curl_setopt ( $ch, CURLOPT_AUTOREFERER, 1 );
+		curl_setopt ( $ch, CURLOPT_POSTFIELDS, $data );
+		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, true );
+		$tmpInfo = curl_exec ( $ch );	
+		if (curl_errno ( $ch )) {
+			return curl_error ( $ch );
+		}
+		curl_close ( $ch );
+		$result = json_decode ( $tmpInfo, true );
+		return $result ['errcode'];
+	}
+	function main_new($appID,$appsecret,$data){
+		while(empty($_SESSION['access_token'])){
+			$_SESSION['access_token']=get_Access_token($appID,$appsecret);
+		}
+		$flag=Send_message($data,$_SESSION['access_token']);
+		if($flag==42001){
+			$_SESSION['access_token']=get_Access_token($appID,$appsecret);
+			$flag=Send_message($data,$_SESSION['access_token']);
+		}	
+	}
+	$appID="";
+	$appsecret="";
+	$data='{
+		    "touser": "oVoAHs1QzBPWooBoal3sLpkN73vw", 
+		    "msgtype": "text", 
+		    "text": {
+		        "content": "还没来吗！"
+		    }
+		   }';
+	main_new($appID,$appsecret,$data);
