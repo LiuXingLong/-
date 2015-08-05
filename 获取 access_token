@@ -1,3 +1,4 @@
+<?php
 /**
 	 * 获取 access_token
 	 * 调用  get_Access_token($appID,$appsecret);
