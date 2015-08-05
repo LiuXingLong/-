@@ -1,5 +1,6 @@
 /**
 	 * 获取 access_token
+	 * 调用  get_Access_token($appID,$appsecret);
 	 * 参数 
 	 * $appID
 	 * $appsecret
