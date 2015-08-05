@@ -1,31 +1,31 @@
 <?php
-/**
-	 * 获取 access_token
-	 * 调用  get_Access_token($appID,$appsecret);
-	 * 参数 
-	 * $appID
-	 * $appsecret
-	 * @return
-	 * 成功返回：access_token
-	 * 失败返回：false
-	 */
-	function get_Access_token($appID,$appsecret){
-		$url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appID}&secret={$appsecret}";
-		$ch=curl_init();
-		curl_setopt ( $ch, CURLOPT_URL, $url);
-		curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, false );
-		curl_setopt ( $ch, CURLOPT_SSL_VERIFYHOST, false );
-		curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );	//设置获取的信息以文件流的形式返回，而不是直接输出。
-		$data = curl_exec($ch); //执行命令
-		curl_close($ch);  //关闭URL请求
-		$data = json_decode ( $data, true ); // 将json 数据转换为数组数据
-		if (empty ( $data ['errcode'] )) {
-			$access_token = $data ['access_token'];
-			if (! empty ( $access_token )) {
-				return $access_token;
-			}
-			return false;
-		} else {
-			return false;
+/*
+ * 获取 access_token
+ * 调用  get_Access_token($appID,$appsecret);
+ * 参数 
+ * $appID
+ * $appsecret
+ * @return
+ * 成功返回：access_token
+ * 失败返回：false
+ */
+function get_Access_token($appID,$appsecret){
+	$url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={$appID}&secret={$appsecret}";
+	$ch=curl_init();
+	curl_setopt ( $ch, CURLOPT_URL, $url);
+	curl_setopt ( $ch, CURLOPT_SSL_VERIFYPEER, false );
+	curl_setopt ( $ch, CURLOPT_SSL_VERIFYHOST, false );
+	curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, 1 );	//设置获取的信息以文件流的形式返回，而不是直接输出。
+	$data = curl_exec($ch); //执行命令
+	curl_close($ch);  //关闭URL请求
+	$data = json_decode ( $data, true ); // 将json 数据转换为数组数据
+	if (empty ( $data ['errcode'] )) {
+		$access_token = $data ['access_token'];
+		if (! empty ( $access_token )) {
+			return $access_token;
 		}
+		return false;
+	} else {
+		return false;
 	}
+}
